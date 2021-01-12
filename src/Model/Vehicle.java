@@ -15,8 +15,6 @@ public abstract class Vehicle {
     int position; // position on current road
     private Color colour;
     private Random random = new Random();
-
-
     public Vehicle(Road currentRoad) {
         id = "000";
         length = 4;
@@ -50,7 +48,14 @@ public abstract class Vehicle {
         //red light check:
         if (speed == STOPPED) { //intentionally left empty
         } else {
-            if (!currentRoad.getLightsOnRoad().isEmpty() && nextPosition + 1 >= currentRoad.getLightsOnRoad().get(0).getPosition() && this.currentRoad.getLightsOnRoad().get(0).getState().equals("red")) {
+            boolean isLightRedWhenCarCome =!this.currentRoad.getLightsOnRoad().isEmpty() &&
+                    this.getPosition() == this.currentRoad.getLightsOnRoad().get(0).getPosition() - 1 &&
+                    this.currentRoad.getLightsOnRoad().get(0).getState().equals("red");
+
+            boolean isConstructionInProcessWhenCarCome = !this.currentRoad.getConstructionAlmostDoneList().isEmpty()
+                    && this.getPosition() == this.currentRoad.getConstructionAlmostDoneList().get(0).getLocation()[0] -1 &&
+                    this.currentRoad.getConstructionAlmostDoneList().get(0).getStatus().equals("processing");
+            if (isLightRedWhenCarCome || isConstructionInProcessWhenCarCome ) {
                 speed = STOPPED;
             } else {
                 speed = currentRoad.getSpeedLimit();
@@ -61,12 +66,14 @@ public abstract class Vehicle {
                     currentRoad.getVehiclesOnRoad().add(this);
                     position = START_POSITION;
                 } else if (currentRoad.getLength() >= nextPosition) {
-                    position = (position + speed);
+                    position += speed;
                 } else {
                     speed = STOPPED;
                 }
             }
         }
+        //gas check
+
     }
 
     public void draw(Graphics g, int scale) {

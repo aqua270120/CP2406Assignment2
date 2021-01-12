@@ -146,7 +146,7 @@ public class Main {
             editorPanel.setVisible(false);
             simulationPanel = new SimulationPanel();
             simulationPanel.setScale(SCALE);
-            simulationPanel.loadMap(editorPanel.getRoads(), editorPanel.getLights());
+            simulationPanel.loadMap(editorPanel.getRoads(), editorPanel.getLights(), editorPanel.getConstructionAlmostDoneList());
             mainWindow.add(simulationPanel);
             startSimItem.setEnabled(true);
             spawnItem.setEnabled(true);

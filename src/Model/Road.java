@@ -19,7 +19,7 @@ public class Road {
     private ArrayList<Vehicle> vehiclesOnRoad = new ArrayList<>();
     private ArrayList<TrafficLight> lightsOnRoad = new ArrayList<>();
     private ArrayList<Road> connectedRoads = new ArrayList<>();
-
+    private ArrayList<ConstructionAlmostDone> constructionAlmostDoneList = new ArrayList<>();
 
     public Road(String id, int speedLimit, int length, int[] startLocation, Orientation orientation) {
         this.id = "road_" + id;
@@ -72,7 +72,7 @@ public class Road {
         return length;
     }
 
-    int getWidth() {
+    public int getWidth() {
         return width;
     }
 
@@ -108,4 +108,11 @@ public class Road {
         return orientation;
     }
 
+    public ArrayList<ConstructionAlmostDone> getConstructionAlmostDoneList() {
+        return constructionAlmostDoneList;
+    }
+
+    public void setConstructionAlmostDoneList(ArrayList<ConstructionAlmostDone> constructionAlmostDoneList) {
+        this.constructionAlmostDoneList = constructionAlmostDoneList;
+    }
 }

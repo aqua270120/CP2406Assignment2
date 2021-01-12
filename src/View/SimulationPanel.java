@@ -19,6 +19,7 @@ public class SimulationPanel extends JPanel {
     private ArrayList<Road> roads;
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
     private ArrayList<TrafficLight> lights;
+    private ArrayList<ConstructionAlmostDone> constructionAlmostDoneList;
     private Timer timer;
     private Boolean stop = true;
     private Random random = new Random();
@@ -30,9 +31,10 @@ public class SimulationPanel extends JPanel {
     private int updateRate = 1000;
 
 
-    public void loadMap(ArrayList<Road> roads, ArrayList<TrafficLight> lights) {
+    public void loadMap(ArrayList<Road> roads, ArrayList<TrafficLight> lights, ArrayList<ConstructionAlmostDone> constructionAlmostDoneList) {
         this.roads = roads;
         this.lights = lights;
+        this.constructionAlmostDoneList = constructionAlmostDoneList;
     }
 
     public void setVehicleSpawn(int spawns) {
@@ -47,15 +49,9 @@ public class SimulationPanel extends JPanel {
     private void createVehicle() {
         int randomVehicle = random.nextInt(3);
         switch (randomVehicle) {
-            case 0:
-                vehicles.add(new Car(Integer.toString(cycle), roads.get(0)));
-                break;
-            case 1:
-                vehicles.add(new Bus(Integer.toString(cycle), roads.get(0)));
-                break;
-            case 2:
-                vehicles.add(new Motorbike(Integer.toString(cycle), roads.get(0)));
-                break;
+            case 0 -> vehicles.add(new Car(Integer.toString(cycle), roads.get(0)));
+            case 1 -> vehicles.add(new Bus(Integer.toString(cycle), roads.get(0)));
+            case 2 -> vehicles.add(new Motorbike(Integer.toString(cycle), roads.get(0)));
         }
     }
 
@@ -98,6 +94,10 @@ public class SimulationPanel extends JPanel {
                 for (TrafficLight light : lights) {
                     light.operate(random.nextInt());
                     light.printLightStatus();
+                }
+                for(ConstructionAlmostDone constructionAlmostDone: constructionAlmostDoneList){
+                    constructionAlmostDone.initializeConstructions();
+                    constructionAlmostDone.printStatus();
                 }
 
             }
@@ -142,6 +142,11 @@ public class SimulationPanel extends JPanel {
         ) {
             light.draw(g, scale);
         }
+
+        for(ConstructionAlmostDone constructionAlmostDone: constructionAlmostDoneList){
+                constructionAlmostDone.draw(g, scale);
+        }
+
     }
 
     private int getTotalVehicles() {

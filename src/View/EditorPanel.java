@@ -1,5 +1,6 @@
 package View;
 
+import Model.ConstructionAlmostDone;
 import Model.Road;
 import Model.TrafficLight;
 
@@ -13,12 +14,14 @@ public class EditorPanel extends JPanel {
 
     private ArrayList<Road> roads;
     private ArrayList<TrafficLight> lights;
+    private ArrayList<ConstructionAlmostDone> constructionAlmostDoneList;
     private int scale;
 
 
     public void newMap() {
         roads = new ArrayList<>();
         lights = new ArrayList<>();
+        constructionAlmostDoneList = new ArrayList<>();
         MouseAdapter mouseLis = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -42,13 +45,10 @@ public class EditorPanel extends JPanel {
                             "Orientation Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
                             null, orientationOptions, roads);
                     switch (orientationSelection) {
-                        case 0:
-                            roads.add(new Road(Integer.toString(roads.size()), 1, 50, new int[]{xValue,
-                                    yValue}, Road.Orientation.HORIZONTAL));
-                            break;
-                        case 1:
-                            roads.add(new Road(Integer.toString(roads.size()), 1, 50, new int[]{xValue,
-                                    yValue}, Road.Orientation.VERTICAL));
+                        case 0 -> roads.add(new Road(Integer.toString(roads.size()), 1, 50, new int[]{xValue,
+                                yValue}, Road.Orientation.HORIZONTAL));
+                        case 1 -> roads.add(new Road(Integer.toString(roads.size()), 1, 50, new int[]{xValue,
+                                yValue}, Road.Orientation.VERTICAL));
                     }
                     String[] connectionOptions = new String[30];
                     for (int i = 0; i < connectionOptions.length; i++) {
@@ -60,6 +60,7 @@ public class EditorPanel extends JPanel {
                     roads.get(connectionSelection).getConnectedRoads().add(roads.get(roads.size() - 1));
                 }
                 for (Road road : roads) {
+                    constructionAlmostDoneList.add(new ConstructionAlmostDone("1", road));
                     lights.add(new TrafficLight("1", road));
                 }
                 repaint();
@@ -75,6 +76,14 @@ public class EditorPanel extends JPanel {
 
     public ArrayList<TrafficLight> getLights() {
         return lights;
+    }
+
+    public ArrayList<ConstructionAlmostDone> getConstructionAlmostDoneList() {
+        return constructionAlmostDoneList;
+    }
+
+    public void setConstructionAlmostDoneList(ArrayList<ConstructionAlmostDone> constructionAlmostDoneList) {
+        this.constructionAlmostDoneList = constructionAlmostDoneList;
     }
 
     public void setScale(int scale) {
